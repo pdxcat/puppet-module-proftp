@@ -1,32 +1,25 @@
-class proftpd {
-
-  user { 'ftp':
-    ensure   => 'present',
-    comment  => 'Anonymous Ftp',
-    gid      => '1',
-    home     => '/u/ftp',
-    password => '*',
-    shell    => '/bin/sh',
-    uid      => '8',
-  }
+class proftpd (
+  $conf = "puppet://$server/modules/proftpd/etc/proftpd/proftpd.conf"
+) {
 
   File {
-    owner     => root,
-    group     => root,
-    mode      => 644,
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
   }
 
-  file {
-    "proftpd-preseed":
-      path    => "/var/cache/debconf/proftpd",
-      source  => "puppet://$server/modules/proftpd/proftpd-preseed";
+  file { "proftpd-preseed":
+    path    => "/var/cache/debconf/proftpd",
+    source  => "puppet://$server/modules/proftpd/proftpd-preseed";
+  }
 
-    "/etc/proftpd/proftpd.conf":
-      source  => "puppet://$server/modules/proftpd/etc/proftpd/proftpd.conf";
+  file { "/etc/proftpd/proftpd.conf":
+    source  => $conf;
+  }
 
-    "/etc/pam.d/proftpd":
-      source  => "puppet://$server/modules/proftpd/etc/pam.d/proftpd";
-   }
+  file { "/etc/pam.d/proftpd":
+    source  => "puppet://$server/modules/proftpd/etc/pam.d/proftpd";
+  }
 
   package { "proftpd":
     ensure    => present,
