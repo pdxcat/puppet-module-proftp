@@ -1,5 +1,5 @@
-class proftpd (
-  $conf = "puppet://$server/modules/proftpd/etc/proftpd/proftpd.conf"
+class proftp (
+  $conf = "puppet://$server/modules/proftp/etc/proftpd/proftpd.conf"
 ) {
 
   File {
@@ -10,7 +10,7 @@ class proftpd (
 
   file { "proftpd-preseed":
     path    => "/var/cache/debconf/proftpd",
-    source  => "puppet://$server/modules/proftpd/proftpd-preseed";
+    source  => "puppet://$server/modules/proftp/proftpd-preseed";
   }
 
   file { "/etc/proftpd/proftpd.conf":
@@ -18,7 +18,7 @@ class proftpd (
   }
 
   file { "/etc/pam.d/proftpd":
-    source  => "puppet://$server/modules/proftpd/etc/pam.d/proftpd";
+    source  => "puppet://$server/modules/proftp/etc/pam.d/proftpd";
   }
 
   package { "proftpd":
