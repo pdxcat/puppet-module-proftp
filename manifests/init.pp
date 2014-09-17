@@ -1,5 +1,5 @@
 class proftp (
-  $conf = "puppet://$server/modules/proftp/etc/proftpd/proftpd.conf"
+  $conf = 'puppet:///modules/proftp/etc/proftpd/proftpd.conf'
 ) {
   include proftp::params
 
@@ -10,8 +10,8 @@ class proftp (
   }
 
   file { 'proftpd-preseed':
-    path    => '/var/cache/debconf/proftpd',
-    source  => "puppet://$server/modules/proftp/proftpd-preseed",
+    path   => '/var/cache/debconf/proftpd',
+    source => 'puppet:///modules/proftp/proftpd-preseed',
   }
 
   file { '/etc/proftpd/proftpd.conf':
@@ -19,13 +19,13 @@ class proftp (
   }
 
   file { '/etc/pam.d/proftpd':
-    source  => "puppet://$server/modules/proftp/etc/pam.d/proftpd",
+    source  => 'puppet:///modules/proftp/etc/pam.d/proftpd',
   }
 
   package { 'proftpd':
-    ensure    => present,
-    name      => $proftp::params::proftp_package,
-    require   => File['proftpd-preseed'],
+    ensure  => present,
+    name    => $proftp::params::proftp_package,
+    require => File['proftpd-preseed'],
   }
 
   service { 'proftpd':
